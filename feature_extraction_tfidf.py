@@ -9,7 +9,6 @@ import numpy as np
 with open ('input/broad_category_data.obj', 'rb') as fp:
     broad_category_data = pickle.load(fp)
 
-# Array of [sequence]
 pmids = []
 docs = []
 broad_categories = []
@@ -38,13 +37,11 @@ tfidf_vecs = tfidf_representation.toarray()
 broad_category = np.array(broad_categories)
 sss1 = StratifiedShuffleSplit(test_size=0.4)
 for train_index, intermediate_test_index in sss1.split(tfidf_vecs, broad_category):
-    # Array of [pmid, cleaned_sequence]
     doc_train, intermediate_doc_test = tfidf_vecs[train_index], tfidf_vecs[intermediate_test_index]
     category_train, intermediate_category_test = broad_category[train_index], broad_category[intermediate_test_index]
 
 sss2 = StratifiedShuffleSplit(test_size=0.5)
 for cv_index, test_index in sss2.split(intermediate_doc_test, intermediate_category_test):
-    # Array of [pmid, cleaned_sequence]
     doc_cv, doc_test = intermediate_doc_test[cv_index], intermediate_doc_test[test_index]
     category_cv, category_test = intermediate_category_test[cv_index], intermediate_category_test[test_index]
 
